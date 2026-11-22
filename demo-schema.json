@@ -1,0 +1,174 @@
+{
+  "gtm.db": [
+    {
+      "name": "companies",
+      "sql": "CREATE TABLE companies(id INTEGER PRIMARY KEY, name TEXT UNIQUE, icp_score INT, hot INT, country_count INT, site_count INT, trial_count INT, angle TEXT, first_seen TEXT)"
+    },
+    {
+      "name": "trials",
+      "sql": "CREATE TABLE trials(id INTEGER PRIMARY KEY, nct TEXT UNIQUE, company TEXT, title TEXT, phases TEXT, status TEXT, last_update TEXT, nsites INT, countries TEXT)"
+    },
+    {
+      "name": "signals",
+      "sql": "CREATE TABLE signals(id INTEGER PRIMARY KEY, company TEXT, kind TEXT, detail TEXT, detected TEXT, freshness_days INT)"
+    },
+    {
+      "name": "sites",
+      "sql": "CREATE TABLE sites(id INTEGER PRIMARY KEY, facility TEXT, company TEXT, country TEXT)"
+    },
+    {
+      "name": "people",
+      "sql": "CREATE TABLE people(id INTEGER PRIMARY KEY, company TEXT, role TEXT, name TEXT)"
+    },
+    {
+      "name": "touch_log",
+      "sql": "CREATE TABLE touch_log(id INTEGER PRIMARY KEY, company TEXT, ts TEXT, channel TEXT, outcome TEXT, loss_reason TEXT)"
+    },
+    {
+      "name": "deals",
+      "sql": "CREATE TABLE deals(id INTEGER PRIMARY KEY, company TEXT, stage TEXT, service_type TEXT, value REAL, opened TEXT, closed TEXT)"
+    },
+    {
+      "name": "source_checks",
+      "sql": "CREATE TABLE source_checks(company TEXT,source TEXT,status TEXT,detail TEXT,url TEXT,checked_at TEXT,PRIMARY KEY(company,source))"
+    },
+    {
+      "name": "source_evidence",
+      "sql": "CREATE TABLE source_evidence(company TEXT,source TEXT,url TEXT,title TEXT,excerpt TEXT,verification TEXT,event_date TEXT,fetched_at TEXT,PRIMARY KEY(company,source,url))"
+    },
+    {
+      "name": "collector_runs",
+      "sql": "CREATE TABLE collector_runs(id INTEGER PRIMARY KEY,source TEXT,started_at TEXT,finished_at TEXT,status TEXT,detail TEXT)"
+    },
+    {
+      "name": "review_flags",
+      "sql": "CREATE TABLE review_flags(company TEXT PRIMARY KEY,status TEXT,reason TEXT,source_url TEXT,reviewed_at TEXT)"
+    },
+    {
+      "name": "batches",
+      "sql": "CREATE TABLE batches(id TEXT PRIMARY KEY,started_at TEXT,finished_at TEXT,mode TEXT,status TEXT,summary TEXT)"
+    },
+    {
+      "name": "check_history",
+      "sql": "CREATE TABLE check_history(id INTEGER PRIMARY KEY,batch_id TEXT,company TEXT,source TEXT,status TEXT,detail TEXT,url TEXT,checked_at TEXT,UNIQUE(batch_id,company,source))"
+    },
+    {
+      "name": "evidence_history",
+      "sql": "CREATE TABLE evidence_history(id INTEGER PRIMARY KEY,batch_id TEXT,company TEXT,source TEXT,url TEXT,payload TEXT,observed_at TEXT,UNIQUE(batch_id,company,source,url))"
+    },
+    {
+      "name": "changes",
+      "sql": "CREATE TABLE changes(id INTEGER PRIMARY KEY,batch_id TEXT,company TEXT,source TEXT,kind TEXT,before_value TEXT,after_value TEXT,created_at TEXT)"
+    },
+    {
+      "name": "document_versions",
+      "sql": "CREATE TABLE document_versions(id INTEGER PRIMARY KEY,url TEXT,hash TEXT,payload_path TEXT,fetched_at TEXT,http_status INTEGER,UNIQUE(url,hash))"
+    },
+    {
+      "name": "blocked_hosts",
+      "sql": "CREATE TABLE blocked_hosts(host TEXT PRIMARY KEY,reason TEXT,blocked_at TEXT)"
+    },
+    {
+      "name": "account_work",
+      "sql": "CREATE TABLE account_work(company TEXT PRIMARY KEY,owner TEXT NOT NULL DEFAULT '',stage TEXT NOT NULL DEFAULT 'Unassigned',task TEXT NOT NULL DEFAULT '',due_date TEXT NOT NULL DEFAULT '',decision TEXT NOT NULL DEFAULT 'Not reviewed',note TEXT NOT NULL DEFAULT '',version INTEGER NOT NULL DEFAULT 0,updated_at TEXT)"
+    },
+    {
+      "name": "workflow_events",
+      "sql": "CREATE TABLE workflow_events(id INTEGER PRIMARY KEY,company TEXT,event_type TEXT,actor TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    },
+    {
+      "name": "trial_history",
+      "sql": "CREATE TABLE trial_history(id INTEGER PRIMARY KEY,batch_id TEXT,nct TEXT,payload TEXT,observed_at TEXT,UNIQUE(batch_id,nct))"
+    },
+    {
+      "name": "app_settings",
+      "sql": "CREATE TABLE app_settings(key TEXT PRIMARY KEY,value TEXT)"
+    },
+    {
+      "name": "hospital_profiles",
+      "sql": "CREATE TABLE hospital_profiles(id TEXT PRIMARY KEY,facility TEXT,city TEXT,country TEXT,region TEXT,owner TEXT DEFAULT '',task TEXT DEFAULT '',version INTEGER DEFAULT 0,updated_at TEXT)"
+    },
+    {
+      "name": "hospital_trial_links",
+      "sql": "CREATE TABLE hospital_trial_links(hospital_id TEXT,nct TEXT,company TEXT,payload TEXT,observed_at TEXT,PRIMARY KEY(hospital_id,nct))"
+    },
+    {
+      "name": "hospital_assessments",
+      "sql": "CREATE TABLE hospital_assessments(hospital_id TEXT,nct TEXT,payload TEXT,version INTEGER DEFAULT 0,updated_at TEXT,PRIMARY KEY(hospital_id,nct))"
+    },
+    {
+      "name": "hospital_events",
+      "sql": "CREATE TABLE hospital_events(id INTEGER PRIMARY KEY,hospital_id TEXT,nct TEXT,actor TEXT,event_type TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    },
+    {
+      "name": "committee_accounts",
+      "sql": "CREATE TABLE committee_accounts(id TEXT PRIMARY KEY,number INTEGER UNIQUE,company TEXT,payload TEXT)"
+    },
+    {
+      "name": "committee_work",
+      "sql": "CREATE TABLE committee_work(id TEXT PRIMARY KEY,owner TEXT DEFAULT '',task TEXT DEFAULT '',state TEXT DEFAULT 'Not reviewed',note TEXT DEFAULT '',version INTEGER DEFAULT 0,updated_at TEXT)"
+    },
+    {
+      "name": "committee_events",
+      "sql": "CREATE TABLE committee_events(id INTEGER PRIMARY KEY,account_id TEXT,actor TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    },
+    {
+      "name": "outreach_work",
+      "sql": "CREATE TABLE outreach_work(company TEXT PRIMARY KEY,subject TEXT,body TEXT,reviewer TEXT,review_note TEXT,state TEXT,source_hash TEXT,version INTEGER DEFAULT 0,updated_at TEXT)"
+    },
+    {
+      "name": "outreach_events",
+      "sql": "CREATE TABLE outreach_events(id INTEGER PRIMARY KEY,company TEXT,actor TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    },
+    {
+      "name": "message_reviews",
+      "sql": "CREATE TABLE message_reviews(company TEXT PRIMARY KEY,decision TEXT,reviewer TEXT,reason TEXT,snapshot_hash TEXT,snapshot_json TEXT,version INTEGER DEFAULT 0,created_at TEXT)"
+    },
+    {
+      "name": "message_review_events",
+      "sql": "CREATE TABLE message_review_events(id INTEGER PRIMARY KEY,company TEXT,decision TEXT,reviewer TEXT,reason TEXT,snapshot_hash TEXT,snapshot_json TEXT,version INTEGER,created_at TEXT)"
+    },
+    {
+      "name": "crm_deals",
+      "sql": "CREATE TABLE crm_deals(id TEXT PRIMARY KEY,company TEXT,stage INTEGER,status TEXT,owner TEXT,task TEXT,due_date TEXT,note TEXT,loss_reason TEXT,proof_json TEXT,version INTEGER,updated_at TEXT)"
+    },
+    {
+      "name": "crm_events",
+      "sql": "CREATE TABLE crm_events(id INTEGER PRIMARY KEY,deal_id TEXT,actor TEXT,reason TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    }
+  ],
+  "crm-simulation.db": [
+    {
+      "name": "crm_deals",
+      "sql": "CREATE TABLE crm_deals(id TEXT PRIMARY KEY,company TEXT,stage INTEGER,status TEXT,owner TEXT,task TEXT,due_date TEXT,note TEXT,loss_reason TEXT,proof_json TEXT,version INTEGER,updated_at TEXT)"
+    },
+    {
+      "name": "crm_events",
+      "sql": "CREATE TABLE crm_events(id INTEGER PRIMARY KEY,deal_id TEXT,actor TEXT,reason TEXT,before_json TEXT,after_json TEXT,created_at TEXT)"
+    }
+  ],
+  "replies-simulation.db": [
+    {
+      "name": "reply_reviews",
+      "sql": "CREATE TABLE reply_reviews(id TEXT PRIMARY KEY,version INTEGER NOT NULL,context_hash TEXT NOT NULL,category TEXT NOT NULL,decision TEXT NOT NULL,draft TEXT NOT NULL,task TEXT NOT NULL,due_date TEXT NOT NULL,reviewer TEXT NOT NULL,reason TEXT NOT NULL,updated_at TEXT NOT NULL)"
+    },
+    {
+      "name": "reply_events",
+      "sql": "CREATE TABLE reply_events(id INTEGER PRIMARY KEY,scenario_id TEXT NOT NULL,before_json TEXT NOT NULL,after_json TEXT NOT NULL,created_at TEXT NOT NULL)"
+    }
+  ],
+  "operations-local.db": [
+    {
+      "name": "plans",
+      "sql": "CREATE TABLE plans(key TEXT PRIMARY KEY,payload TEXT NOT NULL,version INTEGER NOT NULL)"
+    },
+    {
+      "name": "plan_events",
+      "sql": "CREATE TABLE plan_events(id INTEGER PRIMARY KEY,key TEXT,payload TEXT,created_at TEXT)"
+    },
+    {
+      "name": "snapshots",
+      "sql": "CREATE TABLE snapshots(id TEXT PRIMARY KEY,created_at TEXT,payload TEXT NOT NULL,digest TEXT NOT NULL)"
+    }
+  ]
+}

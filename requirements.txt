@@ -1,0 +1,2 @@
+# Offline public demo and test suite use Python standard library only.
+# No accounts, keys or pip dependency installation required.
