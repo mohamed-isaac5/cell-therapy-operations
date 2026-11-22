@@ -12,7 +12,7 @@ A local, single-operator workflow for keeping account context, open questions, s
 
 ## Watch the walkthrough
 
-[Videos and captions on GitHub Releases](https://github.com/mohamed-isaac5/cell-therapy-operations/releases)
+[Watch the walkthrough on YouTube](https://www.youtube.com/watch?v=nh1IadbJdow)
 
 The V3 walkthrough shows the larger retained-public-research build, not the fictional dataset included here. The source runs locally; there is no hosted app.
 
